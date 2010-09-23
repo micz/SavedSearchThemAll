@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
+<?xml-stylesheet type="text/css"
+  href="chrome://SavedSearchThemAll/skin/overlay.css" ?>
+
+<!DOCTYPE overlay SYSTEM
+  "chrome://savedsearchthemall/locale/overlay.dtd">
+
+<overlay id="SavedSearchThemAll-browser-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript"
+    src="chrome://SavedSearchThemAll/content/overlay.js" />
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="SavedSearchThemAll-string-bundle"
+      src="chrome://SavedSearchThemAll/locale/overlay.properties" />
+  </stringbundleset>
+
+ <menupopup id="taskPopup">
+      <menuitem id="SavedSearchThemAll-action-menu-item"
+          label="&SavedSearchThemAll.action.label;"
+          accesskey="&SavedSearchThemAll.actionItem.accesskey;"
+          oncommand="SavedSearchThemAll.onMenuItemCommand(event);"
+          insertafter="javascriptConsole,devToolsSeparator"/>
+</menupopup>
+</overlay>

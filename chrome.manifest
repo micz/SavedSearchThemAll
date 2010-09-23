@@ -1,0 +1,6 @@
+content   SavedSearchThemAll                 chrome/content/
+skin      SavedSearchThemAll   classic/1.0   chrome/skin/
+locale    SavedSearchThemAll   en-US         chrome/locale/en-US/
+locale    SavedSearchThemAll   it-IT         chrome/locale/it-IT/
+
+overlay chrome://messenger/content/messenger.xul chrome://SavedSearchThemAll/content/overlay.xul
