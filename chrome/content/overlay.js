@@ -1,17 +1,28 @@
 Components.utils.import("resource:///modules/virtualFolderWrapper.js");
 
-var SavedSearchThemAll = {
+if(!it) var it={};
+if(!it.micz) it.micz={};
+if(!it.micz.TBPackage) it.micz.SavedSearchThemAll={};
+
+it.micz.SavedSearchThemAll = {
   onLoad: function() {
     // initialization code
     this.initialized = true;
-    this.strings = document.getElementById("SavedSearchThemAll-strings");
   },
 
   onMenuItemCommand: function(e) {
   
-        let start_time=Date.now();
-        //alert('test is starting!');
-        
+  let start_time=Date.now();
+  
+  //this.strings = document.getElementById("SavedSearchThemAll-strings");
+  
+  var strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
+  var p_msg=strbundle.getString("promptMessage");
+  var t_msg=strbundle.getString("promptTitle");
+  
+  var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+  if(!promptService.confirm(null,t_msg,p_msg))return;
+            
   var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
   var allServers = accountManager.allServers;
   var numServers = allServers.Count();
@@ -45,9 +56,8 @@ var SavedSearchThemAll = {
        let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);  
        let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);  
   
-      var strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
-      var am_msg=strbundle.getString("activityMessage");
-
+        var am_msg=strbundle.getString("activityMessage");
+  
         //Initiator is omitted  
         event.init(am_msg,
             null,   
@@ -100,4 +110,4 @@ generateFoldersToSearchList: function(server)
 },
 };
 
-window.addEventListener("load", SavedSearchThemAll.onLoad, false);
+window.addEventListener("load", it.micz.SavedSearchThemAll.onLoad, false);

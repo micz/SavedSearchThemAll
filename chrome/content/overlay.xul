@@ -22,7 +22,7 @@
       <menuitem id="SavedSearchThemAll-action-menu-item"
           label="&SavedSearchThemAll.action.label;"
           accesskey="&SavedSearchThemAll.actionItem.accesskey;"
-          oncommand="SavedSearchThemAll.onMenuItemCommand(event);"
+          oncommand="it.micz.SavedSearchThemAll.onMenuItemCommand(event);"
           insertafter="javascriptConsole,devToolsSeparator"/>
 </menupopup>
 </overlay>
