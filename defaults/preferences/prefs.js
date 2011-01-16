@@ -3,4 +3,4 @@
 //pref("extensions.SavedSearchThemAll.stringpref", "A string");
 
 // https://developer.mozilla.org/en/Localizing_extension_descriptions
-pref("extensions.savedsearchthemall@micz.it.description", "chrome://SavedSearchThemAll/locale/overlay.properties");
+pref("extensions.savedsearchthemall@micz.it.description", "chrome://SavedSearchThemAll/locale/overlay.properties");pref("extensions.SavedSearchThemAll.AllFromLocalFolders", false);
