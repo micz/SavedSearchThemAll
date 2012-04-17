@@ -132,6 +132,15 @@ processSearchSettingForFolder: function(aFolder, aCurrentSearchURIString)
    return aCurrentSearchURIString;
 },
 
+checkSpecialFolder: function(curr_folder)
+{	//we don't want to flag this folders for search
+  is_special=false;
+  if((curr_folder.flags & nsMsgFolderFlags.Mail)&&!(curr_folder.flags & nsMsgFolderFlags.Directory)&&!(curr_folder.flags & nsMsgFolderFlags.Elided)){
+    is_special=(curr_folder.flags & nsMsgFolderFlags.Trash)||(curr_folder.flags & nsMsgFolderFlags.Archive)||(curr_folder.flags & nsMsgFolderFlags.Junk)||(curr_folder.flags & nsMsgFolderFlags.Templates)||(curr_folder.flags & nsMsgFolderFlags.Drafts);
+  }
+  return is_special;
+},
+
 generateFoldersToSearchList: function(server)
 {
   var uriSearchString = "";
@@ -139,13 +148,13 @@ generateFoldersToSearchList: function(server)
     var rootFolder  = server.QueryInterface(Components.interfaces.nsIMsgIncomingServer).rootFolder;
     if (rootFolder)
     {
-      uriSearchString = this.processSearchSettingForFolder(rootFolder, uriSearchString);
+      uriSearchString = "";
       var allFolders = Components.classes["@mozilla.org/supports-array;1"].createInstance(Components.interfaces.nsISupportsArray);
       rootFolder.ListDescendents(allFolders);
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
         }
 }
   return uriSearchString;
