@@ -2,12 +2,16 @@ Components.utils.import("resource:///modules/virtualFolderWrapper.js");
 
 if(!it) var it={};
 if(!it.micz) it.micz={};
-if(!it.micz.TBPackage) it.micz.SavedSearchThemAll={};
+if(!it.micz.SavedSearchThemAll) it.micz.SavedSearchThemAll={};
 
 it.micz.SavedSearchThemAll = {
+
+goAllFromLocalFolders: false,
+ConsiderOnlySubfolders: false,
+
   onLoad: function() {
     // initialization code
-    this.initialized = true;
+    initialized = true;
   },
 
   onMenuItemCommand: function(e) {
@@ -24,12 +28,12 @@ it.micz.SavedSearchThemAll = {
   
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
   prefs = prefs.getBranch("extensions.SavedSearchThemAll.");
-  var goAllFromLocalFolders = prefs.getBoolPref("AllFromLocalFolders");
-  var ConsiderOnlySubfolders = prefs.getBoolPref("ConsiderOnlySubfolders");
-
+  this.goAllFromLocalFolders= prefs.getBoolPref("AllFromLocalFolders");
+  this.ConsiderOnlySubfolders= prefs.getBoolPref("ConsiderOnlySubfolders");
+  
   var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
   var p_msg_c=p_msg;
-  if(goAllFromLocalFolders)p_msg_c+=" "+p_msg_af;
+  if(this.goAllFromLocalFolders)p_msg_c+=" "+p_msg_af;
   p_msg_c+=" "+p_msg_q;
   if(!promptService.confirm(null,t_msg,p_msg_c))return;
 
@@ -49,11 +53,17 @@ it.micz.SavedSearchThemAll = {
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
+          var curr_vfolder_uris="";
           if(curr_folder.flags & nsMsgFolderFlags.Virtual){
            //alert('updating: '+curr_folder.name);
-           var curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server);
+           var virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
+           if(this.ConsiderOnlySubfolders){
+            //Preload Virtual Folder search uris
+            curr_vfolder_uris=virtualFolderWrapper.searchFolderURIs;
+            //alert(curr_vfolder_uris);
+           }
+           var curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server,curr_vfolder_uris);
             //alert("curr_uri= "+curr_uri_search_string);
-            let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
             virtualFolderWrapper.searchFolders = curr_uri_search_string;
             virtualFolderWrapper.cleanUpMessageDatabase();
             accountManager.saveVirtualFolders();
@@ -64,7 +74,7 @@ it.micz.SavedSearchThemAll = {
 
 
 //Local Folder Virtual Folders will search on all accounts?
-if(goAllFromLocalFolders&&!ConsiderOnlySubfolders){
+if(this.goAllFromLocalFolders&&!this.ConsiderOnlySubfolders){
   var qsAllFromLocalFolders="";
 //Build up the global search_string
   for (var index = 0; index < numServers; index++)
@@ -99,7 +109,7 @@ if(goAllFromLocalFolders&&!ConsiderOnlySubfolders){
       }
     }
   }
-}else if(goAllFromLocalFolders&&ConsiderOnlySubfolders){
+}else if(this.goAllFromLocalFolders&&this.ConsiderOnlySubfolders){
   // TODO
 }
 
@@ -144,7 +154,17 @@ checkSpecialFolder: function(curr_folder)
   return is_special;
 },
 
-generateFoldersToSearchList: function(server)
+checkParentSearched: function(curr_folder,curr_vfolder_uris)
+{
+  if(curr_vfolder_uris=="")return false;
+  curr_vfolder_uris_array=curr_vfolder_uris.split("|");
+  alert("curr_vfolder_uris: "+curr_vfolder_uris+"  curr_folder.URI: "+curr_folder.URI+"  curr_folder.parentMsgFolder.URI: "+curr_folder.parent.URI);
+  if((-1===curr_vfolder_uris_array.indexOf(curr_folder.URI))&&(-1===curr_vfolder_uris_array.indexOf(curr_folder.parent.URI)))return false;
+  alert("TRUE!! curr_vfolder_uris: "+curr_vfolder_uris+"  curr_folder.URI: "+curr_folder.URI+"  curr_folder.parentMsgFolder.URI: "+curr_folder.parent.URI);
+  return true;
+},
+
+generateFoldersToSearchList: function(server,curr_vfolder_uris)
 {
   var uriSearchString = "";
 
@@ -157,7 +177,7 @@ generateFoldersToSearchList: function(server)
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)&&(!this.ConsiderOnlySubfolders||(this.checkParentSearched(curr_folder,curr_vfolder_uris)))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
         }
 }
   return uriSearchString;
