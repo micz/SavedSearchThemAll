@@ -37,6 +37,7 @@ ConsiderOnlySubfolders: false,
   p_msg_c+=" "+p_msg_q;
   if(!promptService.confirm(null,t_msg,p_msg_c))return;
 
+if(!this.ConsiderOnlySubfolders){ //We want all folders
   var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
   var allServers = accountManager.allServers;
   var numServers = allServers.Count();
@@ -53,17 +54,11 @@ ConsiderOnlySubfolders: false,
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-          var curr_vfolder_uris="";
           if(curr_folder.flags & nsMsgFolderFlags.Virtual){
            //alert('updating: '+curr_folder.name);
-           var virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
-           if(this.ConsiderOnlySubfolders){
-            //Preload Virtual Folder search uris
-            curr_vfolder_uris=virtualFolderWrapper.searchFolderURIs;
-            //alert(curr_vfolder_uris);
-           }
-           var curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server,curr_vfolder_uris);
+           var curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server);
             //alert("curr_uri= "+curr_uri_search_string);
+            let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
             virtualFolderWrapper.searchFolders = curr_uri_search_string;
             virtualFolderWrapper.cleanUpMessageDatabase();
             accountManager.saveVirtualFolders();
@@ -72,9 +67,8 @@ ConsiderOnlySubfolders: false,
     }
   }
 
-
-//Local Folder Virtual Folders will search on all accounts?
-if(this.goAllFromLocalFolders&&!this.ConsiderOnlySubfolders){
+if(this.goAllFromLocalFolders){
+//Local Folder Virtual Folders will search on all accounts, but NOT ConsiderOnlySubfolders
   var qsAllFromLocalFolders="";
 //Build up the global search_string
   for (var index = 0; index < numServers; index++)
@@ -109,26 +103,53 @@ if(this.goAllFromLocalFolders&&!this.ConsiderOnlySubfolders){
       }
     }
   }
-}else if(this.goAllFromLocalFolders&&this.ConsiderOnlySubfolders){
-  // TODO
 }
+}else{ //END if(!this.ConsiderOnlySubfolders) ... Now we are searching only for subfolders of current selected folders!!
+  var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+  var allServers = accountManager.allServers;
+  var numServers = allServers.Count();
+  for (var index = 0; index < numServers; index++)
+  {
+    //alert(allServers.GetElementAt(index).realHostName);
+    //alert('account: '+index);
+    var rootFolder  = allServers.GetElementAt(index).QueryInterface(Components.interfaces.nsIMsgIncomingServer).rootFolder;
+    if (rootFolder)
+    {
+      //alert(allServers[index]);
+      var allFolders = Components.classes["@mozilla.org/supports-array;1"].createInstance(Components.interfaces.nsISupportsArray);
+      rootFolder.ListDescendents(allFolders);
+      var numFolders = allFolders.Count();
+      for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){
+          var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
+          if(curr_folder.flags & nsMsgFolderFlags.Virtual){
+           //alert('updating: '+curr_folder.name);
+           var curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
+            //alert("curr_uri= "+curr_uri_search_string);
+            let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
+            virtualFolderWrapper.searchFolders = curr_uri_search_string;
+            virtualFolderWrapper.cleanUpMessageDatabase();
+            accountManager.saveVirtualFolders();
+          }
+        }
+    }
+  }
+}
+     
+   //Add and activity event
+   let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);  
+   let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);  
 
-       
-       //Add and activity event
-       let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);  
-       let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);  
-  
-        var am_msg=strbundle.getString("activityMessage");
-  
-        //Initiator is omitted  
-        event.init(am_msg,
-            null,   
-           "Saved Search Them All!",   
-           start_time,  // start time   
-           Date.now());        // completion time  
-               
-        gActivityManager.addActivity(event);
-  },
+    var am_msg=strbundle.getString("activityMessage");
+
+    //Initiator is omitted  
+    event.init(am_msg,
+        null,   
+       "Saved Search Them All!",   
+       start_time,  // start time   
+       Date.now());        // completion time  
+           
+    gActivityManager.addActivity(event);
+},
   
   addFolderToSearchListString: function(aFolder, aCurrentSearchURIString)
 {
@@ -154,17 +175,7 @@ checkSpecialFolder: function(curr_folder)
   return is_special;
 },
 
-checkParentSearched: function(curr_folder,curr_vfolder_uris)
-{
-  if(curr_vfolder_uris=="")return false;
-  curr_vfolder_uris_array=curr_vfolder_uris.split("|");
-  alert("curr_vfolder_uris: "+curr_vfolder_uris+"  curr_folder.URI: "+curr_folder.URI+"  curr_folder.parentMsgFolder.URI: "+curr_folder.parent.URI);
-  if((-1===curr_vfolder_uris_array.indexOf(curr_folder.URI))&&(-1===curr_vfolder_uris_array.indexOf(curr_folder.parent.URI)))return false;
-  alert("TRUE!! curr_vfolder_uris: "+curr_vfolder_uris+"  curr_folder.URI: "+curr_folder.URI+"  curr_folder.parentMsgFolder.URI: "+curr_folder.parent.URI);
-  return true;
-},
-
-generateFoldersToSearchList: function(server,curr_vfolder_uris)
+generateFoldersToSearchList: function(server)
 {
   var uriSearchString = "";
 
@@ -177,9 +188,32 @@ generateFoldersToSearchList: function(server,curr_vfolder_uris)
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)&&(!this.ConsiderOnlySubfolders||(this.checkParentSearched(curr_folder,curr_vfolder_uris)))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
         }
 }
+  return uriSearchString;
+},
+
+generateFoldersToSearchListOnlySub: function(vfolder)
+{
+  let uriSearchString = "";
+
+  if (vfolder)
+  {
+    uriSearchString = "";
+    let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(vfolder);
+    selected_folders=virtualFolderWrapper.searchFolders;
+    for each(let par_folder in selected_folders) {
+      uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString);
+      var par_folder_descendents=Components.classes["@mozilla.org/supports-array;1"].createInstance(Components.interfaces.nsISupportsArray);
+      par_folder.ListDescendents(par_folder_descendents);
+      var numFolders = par_folder_descendents.Count();
+      for (let folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
+        var curr_folder=par_folder_descendents.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
+        if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+      }
+    }
+  }
   return uriSearchString;
 },
 };
