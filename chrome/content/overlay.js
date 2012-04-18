@@ -99,6 +99,8 @@ if(goAllFromLocalFolders&&!ConsiderOnlySubfolders){
       }
     }
   }
+}else if(goAllFromLocalFolders&&ConsiderOnlySubfolders){
+  // TODO
 }
 
        
