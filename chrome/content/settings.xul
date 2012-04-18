@@ -4,18 +4,20 @@
 <prefwindow id="SavedSearchThemAll_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   title="&SavedSearchThemAll.SettingsTitle;">
-  <prefpane>
+    <script type="application/x-javascript"
+    src="chrome://SavedSearchThemAll/content/settings.js" />
+  <prefpane id="SavedSearchThemAll_PrefPane">
     <preferences>
-      <preference id="extensions.SavedSearchThemAll.AllFromLocalFolders"
+      <preference id="SavedSearchThemAll.AllFromLocalFolders"
         name="extensions.SavedSearchThemAll.AllFromLocalFolders"
         type="bool" />
-      <preference id="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
+      <preference id="SavedSearchThemAll.ConsiderOnlySubfolders"
         name="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
-        type="bool" />
+        type="bool" onchange="it.micz.SavedSearchThemAllPref.AllFromLocalFolders_reset();"/>
     </preferences>
-    <checkbox id="extensions.SavedSearchThemAll.AllFromLocalFolders" label="&AllFromLocalFolders.label;"
-      preference="extensions.SavedSearchThemAll.AllFromLocalFolders" />
-    <checkbox id="extensions.SavedSearchThemAll.ConsiderOnlySubfolders" label="&ConsiderOnlySubfolders.label;"
-      preference="extensions.SavedSearchThemAll.ConsiderOnlySubfolders" />
+    <checkbox id="SavedSearchThemAll.AllFromLocalFolders" label="&AllFromLocalFolders.label;"
+      preference="SavedSearchThemAll.AllFromLocalFolders" />
+    <checkbox id="SavedSearchThemAll.ConsiderOnlySubfolders" label="&ConsiderOnlySubfolders.label;"
+      preference="SavedSearchThemAll.ConsiderOnlySubfolders" />
   </prefpane>
 </prefwindow>

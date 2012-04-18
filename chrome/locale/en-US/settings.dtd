@@ -1,3 +1,3 @@
 <!ENTITY SavedSearchThemAll.SettingsTitle "SavedSearchThemAll Settings">
-<!ENTITY AllFromLocalFolders.label "Local Folder Virtual Folders will search on all accounts">
-<!ENTITY ConsiderOnlySubfolders.label "Add only subfolders of currently selected folders">
+<!ENTITY AllFromLocalFolders.label "Local Folder Virtual Folders will search on all accounts.">
+<!ENTITY ConsiderOnlySubfolders.label "Add only subfolders of currently selected folders. With this option selected, the Local Folder option will be inactive.">

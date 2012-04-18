@@ -25,6 +25,7 @@ it.micz.SavedSearchThemAll = {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
   prefs = prefs.getBranch("extensions.SavedSearchThemAll.");
   var goAllFromLocalFolders = prefs.getBoolPref("AllFromLocalFolders");
+  var ConsiderOnlySubfolders = prefs.getBoolPref("ConsiderOnlySubfolders");
 
   var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
   var p_msg_c=p_msg;
@@ -63,7 +64,7 @@ it.micz.SavedSearchThemAll = {
 
 
 //Local Folder Virtual Folders will search on all accounts?
-if(goAllFromLocalFolders){
+if(goAllFromLocalFolders&&!ConsiderOnlySubfolders){
   var qsAllFromLocalFolders="";
 //Build up the global search_string
   for (var index = 0; index < numServers; index++)

@@ -1,3 +1,3 @@
 <!ENTITY SavedSearchThemAll.SettingsTitle "Opzioni SavedSearchThemAll">
-<!ENTITY AllFromLocalFolders.label "Le ricerche salvate delle Cartelle Locali cercheranno in tutti gli account">
-<!ENTITY ConsiderOnlySubfolders.label "Aggiungi solo cartelle figlie di cartelle già selezionate">
+<!ENTITY AllFromLocalFolders.label "Le ricerche salvate delle Cartelle Locali cercheranno in tutti gli account.">
+<!ENTITY ConsiderOnlySubfolders.label "Aggiungi solo cartelle figlie di cartelle già selezionate. Se si seleziona questa opzione, l'opzione sulle Cartelle Locali non sarà attiva.">
