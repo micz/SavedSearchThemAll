@@ -9,8 +9,13 @@
       <preference id="extensions.SavedSearchThemAll.AllFromLocalFolders"
         name="extensions.SavedSearchThemAll.AllFromLocalFolders"
         type="bool" />
+      <preference id="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
+        name="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
+        type="bool" />
     </preferences>
     <checkbox id="extensions.SavedSearchThemAll.AllFromLocalFolders" label="&AllFromLocalFolders.label;"
       preference="extensions.SavedSearchThemAll.AllFromLocalFolders" />
+    <checkbox id="extensions.SavedSearchThemAll.ConsiderOnlySubfolders" label="&ConsiderOnlySubfolders.label;"
+      preference="extensions.SavedSearchThemAll.ConsiderOnlySubfolders" />
   </prefpane>
 </prefwindow>
