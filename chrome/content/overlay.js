@@ -126,7 +126,7 @@ if(this.goAllFromLocalFolders){
            var curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
             //alert("curr_uri= "+curr_uri_search_string);
             let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
-            virtualFolderWrapper.searchFolders = curr_uri_search_string;
+            virtualFolderWrapper.searchFolders = curr_uri_search_string;alert("curr_uri_search_string: "+curr_uri_search_string);
             virtualFolderWrapper.cleanUpMessageDatabase();
             accountManager.saveVirtualFolders();
           }
@@ -160,9 +160,12 @@ if(this.goAllFromLocalFolders){
   return aCurrentSearchURIString;
 },
 
-processSearchSettingForFolder: function(aFolder, aCurrentSearchURIString)
+processSearchSettingForFolder: function(aFolder, aCurrentSearchURIString, uri_array)
 {
-   aCurrentSearchURIString = this.addFolderToSearchListString(aFolder, aCurrentSearchURIString);
+   if(-1===uri_array.indexOf(aFolder.URI)){
+    aCurrentSearchURIString = this.addFolderToSearchListString(aFolder, aCurrentSearchURIString);
+    uri_array.push(aFolder.URI);
+   }
    return aCurrentSearchURIString;
 },
 
@@ -177,7 +180,8 @@ checkSpecialFolder: function(curr_folder)
 
 generateFoldersToSearchList: function(server)
 {
-  var uriSearchString = "";
+  let uriSearchString = "";
+  let uri_array=new Array();
 
     var rootFolder  = server.QueryInterface(Components.interfaces.nsIMsgIncomingServer).rootFolder;
     if (rootFolder)
@@ -188,7 +192,7 @@ generateFoldersToSearchList: function(server)
       var numFolders = allFolders.Count();
       for (var folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
           var curr_folder=allFolders.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+          if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString,uri_array);
         }
 }
   return uriSearchString;
@@ -197,6 +201,7 @@ generateFoldersToSearchList: function(server)
 generateFoldersToSearchListOnlySub: function(vfolder)
 {
   let uriSearchString = "";
+  let uri_array=new Array();
 
   if (vfolder)
   {
@@ -204,13 +209,13 @@ generateFoldersToSearchListOnlySub: function(vfolder)
     let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(vfolder);
     selected_folders=virtualFolderWrapper.searchFolders;
     for each(let par_folder in selected_folders) {
-      uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString);
+      uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString,uri_array);
       var par_folder_descendents=Components.classes["@mozilla.org/supports-array;1"].createInstance(Components.interfaces.nsISupportsArray);
       par_folder.ListDescendents(par_folder_descendents);
       var numFolders = par_folder_descendents.Count();
       for (let folderIndex = 0; folderIndex < numFolders; folderIndex++){ 
         var curr_folder=par_folder_descendents.GetElementAt(folderIndex).QueryInterface(Components.interfaces.nsIMsgFolder);
-        if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString);
+        if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString,uri_array);
       }
     }
   }
