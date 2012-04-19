@@ -13,10 +13,17 @@
         name="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
         type="bool" onchange="it.micz.SavedSearchThemAllPref.AllFromLocalFolders_reset();" />
     </preferences>
+    <label control="symbol" value="&SavedSearchThemAll.GlobalDesc1;"/>
+    <label control="symbol" value="&SavedSearchThemAll.GlobalDesc2;"/>
+    <label control="symbol" value=" "/>
     <checkbox id="SavedSearchThemAll.AllFromLocalFolders_checkbox" label="&AllFromLocalFolders.label;"
       preference="SavedSearchThemAll.AllFromLocalFolders" />
+    <label id="SavedSearchThemAll.AllFromLocalFolders_desc" value="&AllFromLocalFolders.description;"/>
+    <label control="symbol" value=" "/>
     <checkbox id="SavedSearchThemAll.ConsiderOnlySubfolders_checkbox" label="&ConsiderOnlySubfolders.label;"
       preference="SavedSearchThemAll.ConsiderOnlySubfolders" />
+    <label control="symbol" value="&ConsiderOnlySubfolders.description1;"/>
+    <label control="symbol" value="&ConsiderOnlySubfolders.description2;"/>
   </prefpane>
   <script type="application/x-javascript" src="chrome://SavedSearchThemAll/content/settings.js" />
 </prefwindow>
