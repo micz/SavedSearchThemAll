@@ -3,10 +3,8 @@
 <!DOCTYPE overlay SYSTEM "chrome://SavedSearchThemAll/locale/settings.dtd">
 <prefwindow id="SavedSearchThemAll_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  title="&SavedSearchThemAll.SettingsTitle;">
+  title="&SavedSearchThemAll.SettingsTitle;" onload="it.micz.SavedSearchThemAllPref.onLoad();">
   <prefpane id="SavedSearchThemAll_PrefPane">
-   <script type="application/x-javascript"
-    src="chrome://SavedSearchThemAll/content/settings.js" />
     <preferences>
       <preference id="SavedSearchThemAll.AllFromLocalFolders"
         name="extensions.SavedSearchThemAll.AllFromLocalFolders"
@@ -20,4 +18,5 @@
     <checkbox id="SavedSearchThemAll.ConsiderOnlySubfolders_checkbox" label="&ConsiderOnlySubfolders.label;"
       preference="SavedSearchThemAll.ConsiderOnlySubfolders" />
   </prefpane>
+  <script type="application/x-javascript" src="chrome://SavedSearchThemAll/content/settings.js" />
 </prefwindow>
