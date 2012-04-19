@@ -18,8 +18,6 @@ ConsiderOnlySubfolders: false,
   
   let start_time=Date.now();
   
-  //this.strings = document.getElementById("SavedSearchThemAll-strings");
-  
   var strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
   var p_msg=strbundle.getString("promptMessage");
   var p_msg_af=strbundle.getString("promptMessage_AllFromLocalFolders");
@@ -126,7 +124,7 @@ if(this.goAllFromLocalFolders){
            var curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
             //alert("curr_uri= "+curr_uri_search_string);
             let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
-            virtualFolderWrapper.searchFolders = curr_uri_search_string;alert("curr_uri_search_string: "+curr_uri_search_string);
+            virtualFolderWrapper.searchFolders = curr_uri_search_string;//alert("curr_uri_search_string: "+curr_uri_search_string);
             virtualFolderWrapper.cleanUpMessageDatabase();
             accountManager.saveVirtualFolders();
           }
