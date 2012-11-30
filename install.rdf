@@ -4,7 +4,7 @@
     <em:id>savedsearchthemall@micz.it</em:id>
     <em:type>2</em:type>
     <em:name>SavedSearchThemAll</em:name>
-    <em:version>1.3beta</em:version>
+    <em:version>1.2.1</em:version>
     <em:creator>m@micz.it</em:creator>
     <em:contributor></em:contributor>
     <em:optionsURL>chrome://SavedSearchThemAll/content/settings.xul</em:optionsURL>
