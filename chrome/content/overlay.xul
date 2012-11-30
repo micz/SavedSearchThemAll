@@ -25,4 +25,12 @@
           oncommand="it.micz.SavedSearchThemAll.onMenuItemCommand(event);"
           insertafter="javascriptConsole,devToolsSeparator"/>
 </menupopup>
+
+ <menupopup id="appmenu_taskPopup">
+      <menuitem id="SavedSearchThemAll-action-appmenu-item"
+          label="&SavedSearchThemAll.action.label;"
+          accesskey="&SavedSearchThemAll.actionItem.accesskey;"
+          oncommand="it.micz.SavedSearchThemAll.onMenuItemCommand(event);"
+          insertafter="appmenu_javascriptConsole,appmenu_devToolsSeparator"/>
+</menupopup>
 </overlay>
