@@ -10,7 +10,7 @@
     <em:optionsURL>chrome://SavedSearchThemAll/content/settings.xul</em:optionsURL>
     <em:localized>
       <Description>
-        <em:locale>it-IT</em:locale>
+        <em:locale>it</em:locale>
         <em:name>SavedSearchThemAll</em:name>
         <em:description>Facciamo cercare quelle ricerche salvate in tutte le cartelle!</em:description>
       </Description>
