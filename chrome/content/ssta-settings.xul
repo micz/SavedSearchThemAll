@@ -11,7 +11,7 @@
         type="bool" />
       <preference id="SavedSearchThemAll.ConsiderOnlySubfolders"
         name="extensions.SavedSearchThemAll.ConsiderOnlySubfolders"
-        type="bool" onchange="it.micz.SavedSearchThemAllPref.AllFromLocalFolders_reset();" />
+        type="bool" onchange="miczSavedSearchThemAllPref.AllFromLocalFolders_reset();" />
     </preferences>
     <label control="symbol" value="&SavedSearchThemAll.GlobalDesc1;"/>
     <label control="symbol" value="&SavedSearchThemAll.GlobalDesc2;"/>
