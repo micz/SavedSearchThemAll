@@ -25,5 +25,5 @@
     <label control="symbol" value="&ConsiderOnlySubfolders.description1;"/>
     <label control="symbol" value="&ConsiderOnlySubfolders.description2;"/>
   </prefpane>
-  <script type="application/x-javascript" src="chrome://SavedSearchThemAll/content/settings.js" />
+  <script type="application/x-javascript" src="chrome://SavedSearchThemAll/content/ssta-settings.js" />
 </prefwindow>
