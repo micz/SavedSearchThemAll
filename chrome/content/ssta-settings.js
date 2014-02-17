@@ -1,8 +1,4 @@
-if(!it) var it={};
-if(!it.micz) it.micz={};
-if(!it.micz.SavedSearchThemAllPref) it.micz.SavedSearchThemAllPref={};
- 
-it.micz.SavedSearchThemAllPref = {
+miczSavedSearchThemAllPref = {
 
 onLoad: function() {
     let prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);

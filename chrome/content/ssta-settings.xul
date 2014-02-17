@@ -3,7 +3,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://SavedSearchThemAll/locale/settings.dtd">
 <prefwindow id="SavedSearchThemAll_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  title="&SavedSearchThemAll.SettingsTitle;" onload="it.micz.SavedSearchThemAllPref.onLoad();">
+  title="&SavedSearchThemAll.SettingsTitle;" onload="miczSavedSearchThemAllPref.onLoad();">
   <prefpane id="SavedSearchThemAll_PrefPane">
     <preferences>
       <preference id="SavedSearchThemAll.AllFromLocalFolders"

@@ -1,11 +1,7 @@
 Components.utils.import("resource:///modules/virtualFolderWrapper.js");
 Components.utils.import("resource://gre/modules/iteratorUtils.jsm");
 
-if(!it) var it={};
-if(!it.micz) it.micz={};
-if(!it.micz.SavedSearchThemAll) it.micz.SavedSearchThemAll={};
-
-it.micz.SavedSearchThemAll = {
+miczSavedSearchThemAll={
 
 goAllFromLocalFolders: false,
 ConsiderOnlySubfolders: false,
@@ -201,4 +197,4 @@ generateFoldersToSearchListOnlySub: function(vfolder)
 },
 };
 
-window.addEventListener("load", it.micz.SavedSearchThemAll.onLoad, false);
+window.addEventListener("load", miczSavedSearchThemAll.onLoad, false);
