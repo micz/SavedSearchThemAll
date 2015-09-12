@@ -21,6 +21,8 @@
  <menupopup id="taskPopup">
       <menuitem id="SavedSearchThemAll-action-menu-item"
           label="&SavedSearchThemAll.action.label;"
+          class="menuitem-iconic"
+		  image="chrome://SavedSearchThemAll/skin/savedsearchthemall-icon-small.png"
           accesskey="&SavedSearchThemAll.actionItem.accesskey;"
           oncommand="miczSavedSearchThemAll.onMenuItemCommand(event);"
           insertafter="javascriptConsole,devToolsSeparator"/>
@@ -29,6 +31,8 @@
  <menupopup id="appmenu_taskPopup">
       <menuitem id="SavedSearchThemAll-action-appmenu-item"
           label="&SavedSearchThemAll.action.label;"
+          class="menuitem-iconic"
+		  image="chrome://SavedSearchThemAll/skin/savedsearchthemall-icon-small.png"
           accesskey="&SavedSearchThemAll.actionItem.accesskey;"
           oncommand="miczSavedSearchThemAll.onMenuItemCommand(event);"
           insertafter="appmenu_javascriptConsole,appmenu_devToolsSeparator"/>
