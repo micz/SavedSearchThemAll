@@ -1,6 +1,9 @@
 -= SavedSearchThemAll Thunderbird Addon Release Notes =-
 
 ==========
+Version 1.4 - ??/??/2015
+-
+==========
 Version 1.3.1 - 13/09/2015
 - Toolbar button added.
 - Menu icon added.
