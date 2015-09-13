@@ -3,4 +3,5 @@ skin      SavedSearchThemAll   classic/1.0   chrome/skin/
 locale    SavedSearchThemAll   en-US         chrome/locale/en-US/
 locale    SavedSearchThemAll   it            chrome/locale/it/
 
+style chrome://global/content/customizeToolbar.xul chrome://SavedSearchThemAll/content/ssta-button.css
 overlay chrome://messenger/content/messenger.xul chrome://SavedSearchThemAll/content/ssta-overlay.xul

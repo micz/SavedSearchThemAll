@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet type="text/css" href="chrome://global/skin/" ?>
-<?xml-stylesheet type="text/css"
-  href="chrome://SavedSearchThemAll/skin/overlay.css" ?>
+<?xml-stylesheet type="text/css" href="chrome://SavedSearchThemAll/content/ssta-button.css"?>
 
 <!DOCTYPE overlay SYSTEM
   "chrome://savedsearchthemall/locale/overlay.dtd">
@@ -17,6 +16,20 @@
     <stringbundle id="SavedSearchThemAll-string-bundle"
       src="chrome://SavedSearchThemAll/locale/overlay.properties" />
   </stringbundleset>
+
+  <!-- Thunderbird mail -->
+<toolbarpalette id="MailToolbarPalette">
+  <toolbarbutton id="ssta-button"/>
+  </toolbarpalette>
+
+<!-- button details -->
+<toolbarpalette id="MailToolbarPalette">
+	<toolbarbutton id="ssta-button"
+	  label="&SavedSearchThemAll.button.label;"
+	  tooltiptext="&SavedSearchThemAll.action.label;"
+	  oncommand="miczSavedSearchThemAll.onMenuItemCommand(event);"
+	  class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+</toolbarpalette>
 
  <menupopup id="taskPopup">
       <menuitem id="SavedSearchThemAll-action-menu-item"
