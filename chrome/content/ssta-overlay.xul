@@ -28,7 +28,7 @@
 	  label="&SavedSearchThemAll.button.label;"
 	  tooltiptext="&SavedSearchThemAll.action.label;"
 	  oncommand="miczSavedSearchThemAll.onMenuItemCommand(event);"
-	  class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+	  class="toolbarbutton-1"/>
 </toolbarpalette>
 
  <menupopup id="taskPopup">
