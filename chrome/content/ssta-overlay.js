@@ -1,31 +1,33 @@
+"use strict";
 Components.utils.import("resource:///modules/virtualFolderWrapper.js");
 Components.utils.import("resource://gre/modules/iteratorUtils.jsm");
 
-miczSavedSearchThemAll={
+var miczSavedSearchThemAll={
 
 goAllFromLocalFolders: false,
 ConsiderOnlySubfolders: false,
+initialized: false,
 
   onLoad: function() {
     // initialization code
-    initialized = true;
+    this.initialized = true;
   },
 
   onMenuItemCommand: function(e) {
-  
+
   let start_time=Date.now();
-  
+
   var strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
   var p_msg=strbundle.getString("promptMessage");
   var p_msg_af=strbundle.getString("promptMessage_AllFromLocalFolders");
   var p_msg_q=strbundle.getString("promptMessage_Question");
   var t_msg=strbundle.getString("promptTitle");
-  
+
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
   prefs = prefs.getBranch("extensions.SavedSearchThemAll.");
   this.goAllFromLocalFolders= prefs.getBoolPref("AllFromLocalFolders");
   this.ConsiderOnlySubfolders= prefs.getBoolPref("ConsiderOnlySubfolders");
-  
+
   var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
   var p_msg_c=p_msg;
   if(this.goAllFromLocalFolders)p_msg_c+=" "+p_msg_af;
@@ -112,23 +114,23 @@ if(this.goAllFromLocalFolders){
     }
   }
 }
-     
+
    //Add and activity event
-   let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);  
-   let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);  
+   let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);
+   let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);
 
     var am_msg=strbundle.getString("activityMessage");
 
-    //Initiator is omitted  
+    //Initiator is omitted
     event.init(am_msg,
-        null,   
-       "Saved Search Them All!",   
-       start_time,  // start time   
-       Date.now());        // completion time  
-           
+        null,
+       "Saved Search Them All!",
+       start_time,  // start time
+       Date.now());        // completion time
+
     gActivityManager.addActivity(event);
 },
-  
+
   addFolderToSearchListString: function(aFolder, aCurrentSearchURIString)
 {
   if (aCurrentSearchURIString)
@@ -149,7 +151,7 @@ processSearchSettingForFolder: function(aFolder, aCurrentSearchURIString, uri_ar
 
 checkSpecialFolder: function(curr_folder)
 {	//we don't want to flag this folders for search
-  is_special=false;
+  let is_special=false;
   if((curr_folder.flags & nsMsgFolderFlags.Mail)&&!(curr_folder.flags & nsMsgFolderFlags.Directory)&&!(curr_folder.flags & nsMsgFolderFlags.Elided)){
     is_special=(curr_folder.flags & nsMsgFolderFlags.Trash)||(curr_folder.flags & nsMsgFolderFlags.Archive)||(curr_folder.flags & nsMsgFolderFlags.Junk)||(curr_folder.flags & nsMsgFolderFlags.Templates)||(curr_folder.flags & nsMsgFolderFlags.Drafts);
   }
@@ -183,7 +185,7 @@ generateFoldersToSearchListOnlySub: function(vfolder)
   {
     uriSearchString = "";
     let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(vfolder);
-    selected_folders=virtualFolderWrapper.searchFolders;
+    let selected_folders=virtualFolderWrapper.searchFolders;
     for each(let par_folder in selected_folders) {
       uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString,uri_array);
       var par_folder_descendents=Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);

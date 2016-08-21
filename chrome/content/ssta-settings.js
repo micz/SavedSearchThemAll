@@ -1,4 +1,5 @@
-miczSavedSearchThemAllPref = {
+"use strict";
+var miczSavedSearchThemAllPref = {
 
 onLoad: function() {
     let prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
