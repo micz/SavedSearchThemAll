@@ -17,37 +17,37 @@ initialized: false,
 
   let start_time=Date.now();
 
-  var strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
-  var p_msg=strbundle.getString("promptMessage");
-  var p_msg_af=strbundle.getString("promptMessage_AllFromLocalFolders");
-  var p_msg_q=strbundle.getString("promptMessage_Question");
-  var t_msg=strbundle.getString("promptTitle");
+  let strbundle = document.getElementById("SavedSearchThemAll-string-bundle");
+  let p_msg=strbundle.getString("promptMessage");
+  let p_msg_af=strbundle.getString("promptMessage_AllFromLocalFolders");
+  let p_msg_q=strbundle.getString("promptMessage_Question");
+  let t_msg=strbundle.getString("promptTitle");
 
-  var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+  let prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
   prefs = prefs.getBranch("extensions.SavedSearchThemAll.");
   this.goAllFromLocalFolders= prefs.getBoolPref("AllFromLocalFolders");
   this.ConsiderOnlySubfolders= prefs.getBoolPref("ConsiderOnlySubfolders");
 
-  var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-  var p_msg_c=p_msg;
+  let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+  let p_msg_c=p_msg;
   if(this.goAllFromLocalFolders)p_msg_c+=" "+p_msg_af;
   p_msg_c+=" "+p_msg_q;
   if(!promptService.confirm(null,t_msg,p_msg_c))return;
 
 if(!this.ConsiderOnlySubfolders){ //We want all folders
-  var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
-  var allServers = accountManager.allServers;
+  let accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+  let allServers = accountManager.allServers;
   for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
   {
-   var rootFolder  = currServer.rootFolder;
+   let rootFolder  = currServer.rootFolder;
     if (rootFolder)
     {
-      var allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
+      let allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       rootFolder.ListDescendants(allFolders);
       for (let curr_folder in fixIterator(allFolders,Components.interfaces.nsIMsgFolder)){
           if(curr_folder.flags & nsMsgFolderFlags.Virtual){
            //alert('updating: '+curr_folder.name);
-           var curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server);
+           let curr_uri_search_string=this.generateFoldersToSearchList(curr_folder.server);
             //alert("curr_uri= "+curr_uri_search_string);
             let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
             virtualFolderWrapper.searchFolders = curr_uri_search_string;
@@ -60,7 +60,7 @@ if(!this.ConsiderOnlySubfolders){ //We want all folders
 
 if(this.goAllFromLocalFolders){
 //Local Folder Virtual Folders will search on all accounts, but NOT ConsiderOnlySubfolders
-  var qsAllFromLocalFolders="";
+  let qsAllFromLocalFolders="";
 //Build up the global search_string
   for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
   {
@@ -71,10 +71,10 @@ if(this.goAllFromLocalFolders){
   for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
   {
     if("Local Folders"==currServer.realHostName){
-      var rootFolder  = currServer.rootFolder;
+      let rootFolder  = currServer.rootFolder;
       if (rootFolder)
       {
-        var allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
+        let allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
         rootFolder.ListDescendants(allFolders);
         for (let curr_folder in fixIterator(allFolders,Components.interfaces.nsIMsgFolder)){
             if(curr_folder.flags & nsMsgFolderFlags.Virtual){
@@ -91,19 +91,19 @@ if(this.goAllFromLocalFolders){
   }
 }
 }else{ //END if(!this.ConsiderOnlySubfolders) ... Now we are searching only for subfolders of current selected folders!!
-  var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
-  var allServers = accountManager.allServers;
+  let accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+  let allServers = accountManager.allServers;
   for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
   {
-    var rootFolder  = currServer.rootFolder;
+    let rootFolder  = currServer.rootFolder;
     if (rootFolder)
     {
-      var allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
+      let allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       rootFolder.ListDescendants(allFolders);
         for (let curr_folder in fixIterator(allFolders,Components.interfaces.nsIMsgFolder)){
           if(curr_folder.flags & nsMsgFolderFlags.Virtual){
            //alert('updating: '+curr_folder.name);
-           var curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
+           let curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
             //alert("curr_uri= "+curr_uri_search_string);
             let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
             virtualFolderWrapper.searchFolders = curr_uri_search_string;//alert("curr_uri_search_string: "+curr_uri_search_string);
@@ -119,7 +119,7 @@ if(this.goAllFromLocalFolders){
    let gActivityManager = Components.classes["@mozilla.org/activity-manager;1"].getService(Components.interfaces.nsIActivityManager);
    let event = Components.classes["@mozilla.org/activity-event;1"].createInstance(Components.interfaces.nsIActivityEvent);
 
-    var am_msg=strbundle.getString("activityMessage");
+    let am_msg=strbundle.getString("activityMessage");
 
     //Initiator is omitted
     event.init(am_msg,
@@ -163,11 +163,11 @@ generateFoldersToSearchList: function(server)
   let uriSearchString = "";
   let uri_array=new Array();
 
-    var rootFolder  = server.QueryInterface(Components.interfaces.nsIMsgIncomingServer).rootFolder;
+    let rootFolder  = server.QueryInterface(Components.interfaces.nsIMsgIncomingServer).rootFolder;
     if (rootFolder)
     {
       uriSearchString = "";
-      var allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
+      let allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       rootFolder.ListDescendants(allFolders);
       for (let curr_folder in fixIterator(allFolders,Components.interfaces.nsIMsgFolder)){
           if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))&&(curr_folder.server==server)) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString,uri_array);
@@ -188,7 +188,7 @@ generateFoldersToSearchListOnlySub: function(vfolder)
     let selected_folders=virtualFolderWrapper.searchFolders;
     for each(let par_folder in selected_folders) {
       uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString,uri_array);
-      var par_folder_descendents=Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
+      let par_folder_descendents=Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       par_folder.ListDescendants(par_folder_descendents);
       for (let curr_folder in fixIterator(par_folder_descendents,Components.interfaces.nsIMsgFolder)){
         if(!(curr_folder.flags & nsMsgFolderFlags.Virtual)&&(!this.checkSpecialFolder(curr_folder))) uriSearchString = this.processSearchSettingForFolder(curr_folder, uriSearchString,uri_array);
