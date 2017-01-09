@@ -37,7 +37,7 @@ initialized: false,
 if(!this.ConsiderOnlySubfolders){ //We want all folders
   let accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
   let allServers = accountManager.allServers;
-  for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
+  for(let currServer in fixIterator(allServers, Components.interfaces.nsIMsgIncomingServer))
   {
    let rootFolder  = currServer.rootFolder;
     if (rootFolder)
@@ -62,13 +62,13 @@ if(this.goAllFromLocalFolders){
 //Local Folder Virtual Folders will search on all accounts, but NOT ConsiderOnlySubfolders
   let qsAllFromLocalFolders="";
 //Build up the global search_string
-  for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
+  for(let currServer in fixIterator(allServers, Components.interfaces.nsIMsgIncomingServer))
   {
     qsAllFromLocalFolders+="|"+this.generateFoldersToSearchList(currServer);
     //alert("qs= "+qsAllFromLocalFolders.slice(1));
   }
 //Assign the global search_string to all the Local Folders' saved search folders.
-  for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
+  for(let currServer in fixIterator(allServers, Components.interfaces.nsIMsgIncomingServer))
   {
     if("Local Folders"==currServer.realHostName){
       let rootFolder  = currServer.rootFolder;
@@ -93,7 +93,7 @@ if(this.goAllFromLocalFolders){
 }else{ //END if(!this.ConsiderOnlySubfolders) ... Now we are searching only for subfolders of current selected folders!!
   let accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
   let allServers = accountManager.allServers;
-  for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
+  for(let currServer in fixIterator(allServers, Components.interfaces.nsIMsgIncomingServer))
   {
     let rootFolder  = currServer.rootFolder;
     if (rootFolder)
