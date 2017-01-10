@@ -2,6 +2,7 @@
 
 ==========
 Version 1.3.3 - ??/??/2017
+- Archive folders are now no more considered special, so they are added to the searchable list.
 -
 ==========
 Version 1.3.2 - 21/08/2016
