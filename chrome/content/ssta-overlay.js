@@ -96,17 +96,20 @@ if(this.goAllFromLocalFolders){
   for(let currServer in fixIterator(allServers, Components.nsIMsgIncomingServer))
   {
     let rootFolder  = currServer.rootFolder;
+    //dump('>>>>>>>>>>>>>>>> currServer.hostName: '+currServer.hostName+"\r\n");
     if (rootFolder)
     {
+	 // dump('>>>>>>>>>>>>>>>> currServer.rootFolder: '+currServer.rootFolder.name+"\r\n");
       let allFolders = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       rootFolder.ListDescendants(allFolders);
         for (let curr_folder in fixIterator(allFolders,Components.interfaces.nsIMsgFolder)){
           if(curr_folder.flags & nsMsgFolderFlags.Virtual){
-           //alert('updating: '+curr_folder.name);
+          // dump('>>>>>>>>>>>>>>>> updating: '+curr_folder.name+"\r\n");
            let curr_uri_search_string=this.generateFoldersToSearchListOnlySub(curr_folder);
-            //alert("curr_uri= "+curr_uri_search_string);
+            //dump(">>>>>>>>>>>>>>>> curr_uri= "+curr_uri_search_string+"\r\n");
             let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(curr_folder);
-            virtualFolderWrapper.searchFolders = curr_uri_search_string;//alert("curr_uri_search_string: "+curr_uri_search_string);
+            virtualFolderWrapper.searchFolders = curr_uri_search_string;
+            //dump(">>>>>>>>>>>>>>>> curr_uri_search_string: "+curr_uri_search_string+"\r\n");
             virtualFolderWrapper.cleanUpMessageDatabase();
             accountManager.saveVirtualFolders();
           }
@@ -153,7 +156,7 @@ checkSpecialFolder: function(curr_folder)
 {	//we don't want to flag this folders for search
   let is_special=false;
   if((curr_folder.flags & nsMsgFolderFlags.Mail)&&!(curr_folder.flags & nsMsgFolderFlags.Directory)&&!(curr_folder.flags & nsMsgFolderFlags.Elided)){
-    is_special=(curr_folder.flags & nsMsgFolderFlags.Trash)||(curr_folder.flags & nsMsgFolderFlags.Archive)||(curr_folder.flags & nsMsgFolderFlags.Junk)||(curr_folder.flags & nsMsgFolderFlags.Templates)||(curr_folder.flags & nsMsgFolderFlags.Drafts);
+    is_special=(curr_folder.flags & nsMsgFolderFlags.Trash)||(curr_folder.flags & nsMsgFolderFlags.Junk)||(curr_folder.flags & nsMsgFolderFlags.Templates)||(curr_folder.flags & nsMsgFolderFlags.Drafts);
   }
   return is_special;
 },
