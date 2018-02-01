@@ -1,6 +1,6 @@
 "use strict";
 Components.utils.import("resource:///modules/virtualFolderWrapper.js");
-Components.utils.import("resource://gre/modules/iteratorUtils.jsm");
+Components.utils.import("resource:///modules/iteratorUtils.jsm");
 
 var miczSavedSearchThemAll={
 
@@ -189,7 +189,7 @@ generateFoldersToSearchListOnlySub: function(vfolder)
     uriSearchString = "";
     let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(vfolder);
     let selected_folders=virtualFolderWrapper.searchFolders;
-    for each(let par_folder in selected_folders) {
+    for (let par_folder in selected_folders) {
       uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString,uri_array);
       let par_folder_descendents=Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       par_folder.ListDescendants(par_folder_descendents);
