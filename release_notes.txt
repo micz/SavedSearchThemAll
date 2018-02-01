@@ -1,6 +1,9 @@
 -= SavedSearchThemAll Thunderbird Addon Release Notes =-
 
 ==========
+Version 1.5 - ??/??/2018
+-
+==========
 Version 1.4 - 01/02/2018
 - Added compatibility with Thunderbird 57+.
 ==========
