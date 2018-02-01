@@ -189,7 +189,7 @@ generateFoldersToSearchListOnlySub: function(vfolder)
     uriSearchString = "";
     let virtualFolderWrapper = VirtualFolderHelper.wrapVirtualFolder(vfolder);
     let selected_folders=virtualFolderWrapper.searchFolders;
-    for (let par_folder in selected_folders) {
+    for (let par_folder of selected_folders) {
       uriSearchString = this.processSearchSettingForFolder(par_folder, uriSearchString,uri_array);
       let par_folder_descendents=Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIArray);
       par_folder.ListDescendants(par_folder_descendents);
